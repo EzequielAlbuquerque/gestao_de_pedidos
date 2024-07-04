@@ -85,14 +85,14 @@ class AddProduto {
   }
   recuperarDados(){
     let dados = {
-      clientes: this.cliente,
+      cliente: this.cliente,
       data: this.data,
       pedido: this.pedido,
       cod: this.cod,
       descricao: this.descricao,
-      qtd: this.qtd,
-      valor_und: this.valor,
-      total: this.total
+      qtd: this.qtd || 0,
+      valor_und: this.valor ||0,
+      total: this.total || 0
 
     }
 
@@ -130,7 +130,7 @@ export function eventPesquisaCliente() {
 0
       RecuperarProdutos.recuperarProdutoCod(cod);
     });
-
+   let n = 0
   document.getElementById("addProduto").addEventListener("click", (ep) => {
     ep.preventDefault();
     let cliente = document.getElementById("PeidoCliente").value;
@@ -145,7 +145,37 @@ export function eventPesquisaCliente() {
 
     let add = new AddProduto(cliente, data, pedido, cod, descricao, qtd, valor, total);
     add.subtrairQtdProduto(cod);
-    console.log(add.recuperarDados())
+    
+
+    add.recuperarDados()
+
+    n++
+    let btn = document.createElement('button')
+    btn.innerHTML = '<i class="fa-solid fa-trash"></i>'
+    btn.style.border = 'none'
+    btn.classList.add('bg-info')
+    document.getElementById('contentTable').style.display = 'block'
+    document.getElementById('dataPedido').innerHTML = add.recuperarDados().data
+    document.getElementById('numeroPedido').innerHTML = `Pedido: ${add.recuperarDados().pedido}`
+    let table = document.getElementById('bTable')
+    let linha = table.insertRow()
+    linha.insertCell(0).innerHTML = n
+    linha.insertCell(1).innerHTML = add.recuperarDados().cod
+    linha.insertCell(2).innerHTML = add.recuperarDados().descricao.toLowerCase()
+    linha.insertCell(3).innerHTML = add.recuperarDados().qtd
+    linha.insertCell(4).innerHTML = parseFloat(add.recuperarDados().valor).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }); 
+    linha.insertCell(5).innerHTML = add.recuperarDados().total
+    linha.insertCell(6).append(btn)
+
+    
+    
+    
+
+    
+
   });
   valor.addEventListener("blur", () => {
     let qtd = document.getElementById("qtd");

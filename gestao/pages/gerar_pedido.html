@@ -79,33 +79,27 @@
           </button>
         </div>
       </form>
-      <div class="mt-4 border">
-        <div class="d-flex justify-content-between px-2 border-bottom p-2 bg-light">
-          <span>Data do pedido:</span>
-          <span>Pedido:</span>
+      <div id="contentTable" style="display: none;" class="mt-4 border">
+        <div
+          class="d-flex justify-content-between px-2 border-bottom p-2 bg-light fw-bold"
+        >
+          <span id="dataPedido">Data do pedido:</span>
+          <span id="numeroPedido">Pedido:</span>
         </div>
-        <table class="table">
-          <thead>
-            <tr class="bg-secondary">
+        <table class="table table-bordered mb-0 bg-info fw-bold text-center">
+          <thead class="bg-dark text-light">
+            <tr>
               <th>#</th>
               <th>Cod:</th>
               <th>Descrição</th>
               <th>Qtd:</th>
               <th>Valor unid:</th>
               <th>Total:</th>
-              <th></th>
+              <th>#</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>123</td>
-              <td>Colar</td>
-              <td>1</td>
-              <td>R$20,00</td>
-              <td>R$20,00</td>
-              <td>X</td>
-            </tr>
+          <tbody id="bTable">
+            
           </tbody>
         </table>
       </div>
@@ -121,7 +115,11 @@
             <p>Deseja confirmar esse pedido ?</p>
           </div>
           <div class="btnModal">
-            <button id="btnFechar" class="btn btn-outline-success" type="button">
+            <button
+              id="btnFechar"
+              class="btn btn-outline-success"
+              type="button"
+            >
               Voltar
             </button>
             <button class="btn btn-success" type="button">Confirmar</button>
