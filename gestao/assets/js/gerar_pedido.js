@@ -12,7 +12,7 @@ class GerarPedido {
   static converterDados(Cliente) {
     let dados = this.recuperarDadosCliente();
 
-    return dados.some((c) => c.cliente === Cliente);
+    return dados.find((c) => c.cliente === Cliente);
   }
 
   recuperarNumeroPedido() {
@@ -57,10 +57,10 @@ class AddProduto {
     this.data = data;
     this.pedido = pedido;
     this.cod = cod;
-    this.descrição = descricao;
-    this.qtd = parseInt(qtd);
+    this.descricao = descricao;
+    this.qtd = parseFloat(qtd);
     this.valor = parseFloat(valor);
-    this.total = parseFloat(total)
+    this.total = total
 
 
   }
@@ -69,11 +69,11 @@ class AddProduto {
     return JSON.parse(recuperarQtd);
   }
 
-  subitrairQtdProduto(cod) {
+  subtrairQtdProduto(cod) {
     let listaProdutos = this.recuperarQtdProduto();
     let verificarValorProduto = listaProdutos.find((codi) => codi.cod === cod);
     if (verificarValorProduto) {
-      if (verificarValorProduto.qtd >= this.qtd) {
+      if (parseFloat(verificarValorProduto.qtd) >= this.qtd) {
         verificarValorProduto.qtd -= this.qtd;
         localStorage.setItem("produtos", JSON.stringify(listaProdutos));
         return verificarValorProduto;
@@ -85,13 +85,13 @@ class AddProduto {
   }
   recuperarDados(){
     let dados = {
-      cliente: this.cliente,
+      clientes: this.cliente,
       data: this.data,
       pedido: this.pedido,
       cod: this.cod,
       descricao: this.descricao,
       qtd: this.qtd,
-      valor: this.valor,
+      valor_und: this.valor,
       total: this.total
 
     }
@@ -133,25 +133,25 @@ export function eventPesquisaCliente() {
 
   document.getElementById("addProduto").addEventListener("click", (ep) => {
     ep.preventDefault();
-    let cliente = document.getElementById("PeidoCliente");
-    let data = document.getElementById("data");
-    let pedido = document.getElementById("nPedido");
-    let cod = document.getElementById("cod");
-    let qtd = document.getElementById("qtd");
-    let descricao = document.getElementById("descricao");
-    let valor = document.getElementById("valor");
-    let total = document.getElementById("total");
+    let cliente = document.getElementById("PeidoCliente").value;
+    let data = document.getElementById("data").value;
+    let pedido = document.getElementById("nPedido").value;
+    let cod = document.getElementById("cod").value;
+    let descricao = document.getElementById("descricao").value;
+    let qtd = document.getElementById("qtd").value;
+    let valor = document.getElementById("valor").value;
+    let total = document.getElementById("total").value;
     
 
-    let add = new AddProduto(cliente.value, data.value, pedido.value, cod.value, qtd.value, descricao.value, valor.value, total.value);
-    add.subitrairQtdProduto(cod.value);
+    let add = new AddProduto(cliente, data, pedido, cod, descricao, qtd, valor, total);
+    add.subtrairQtdProduto(cod);
     console.log(add.recuperarDados())
   });
   valor.addEventListener("blur", () => {
     let qtd = document.getElementById("qtd");
     let valor = document.getElementById("valor");
     let total = document.getElementById("total");
-    let soma = qtd.value * parseFloat(valor.value);
+    let soma = qtd.value * parseFloat(valor.value.replace(',', '.'));
     if (valor.value) {
       total.value = parseFloat(soma).toLocaleString("pt-BR", {
         style: "currency",
