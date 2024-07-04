@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerar pedido</title>
+  </head>
+  <body>
+    <div class="w-50 ps-5 pt-3">
+      <form class="row g-2">
+        <div class="col-md-4">
+          <input
+            id="Cliente"
+            class="form-control"
+            type="search"
+            placeholder="Nome do cliente"
+          />
+          <span class="text-danger" id="infoCadastro"></span>
+        </div>
+        <div class="col-md-8 mb-5">
+          <button
+            id="pesquisar-cliente"
+            class="btn btn-primary btns"
+            type="submit"
+          >
+            Pesquisar
+          </button>
+        </div>
+        <div class="col-md-2 mt-5">
+          <label class="form-label">Data:</label>
+          <input id="data" class="form-control mb-3" type="text" readonly />
+        </div>
+        <div class="col-md-6 mt-5">
+          <label class="form-label">Cliente:</label>
+          <input id="PeidoCliente" class="form-control" type="text" readonly />
+        </div>
+        <div class="col-md-4 mt-5">
+          <label class="form-label">Nª pedido:</label>
+          <input id="nPedido" class="form-control" type="text" readonly />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label" for="cod">Cod:</label>
+          <input id="cod" class="form-control mb-3" type="text" />
+          <span id="textCod" class="text-danger"></span>
+        </div>
+        <div class="col-md-2 d-flex align-items-end mb-3">
+          <button
+            id="consultarProduto"
+            class="btn btn-primary align-text-bottom btns"
+            type="button"
+          >
+            Consultar
+          </button>
+        </div>
+        <div class="col-md-8">
+          <label class="form-label">Descrição:</label>
+          <input id="descricao" class="form-control" type="text" readonly />
+        </div>
+        <div class="col-md-1">
+          <label class="form-label" for="qtd">Qtd:</label>
+          <input id="qtd" class="form-control" type="text" />
+          <span id="textQtd" class="text-danger"></span>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label" for="valor">Valor und:</label>
+          <input id="valor" class="form-control" type="text" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label" for="total">Total:</label>
+          <input id="total" class="form-control" type="text" readonly />
+        </div>
+        <div class="col-md-4 d-flex align-items-end me-2">
+          <button
+            id="addProduto"
+            class="btn btn-primary align-text-bottom btns"
+            type="button"
+          >
+            Adicionar produto
+          </button>
+        </div>
+      </form>
+      <button id="btnPedido" type="button" class="btn btn-success mt-4 btns">
+        Gerar pedido
+      </button>
+      <div class="modalContent">
+        <div class="Modal">
+          <div class="modalItle">
+            <h3>Confirmar Pedido!</h3>
+          </div>
+          <div class="modalBody">
+            <p>Deseja confirmar o pedido ?</p>
+          </div>
+          <div class="btnModal">
+            <button id="btnFechar" class="btn btn-success" type="button">
+              Voltar
+            </button>
+            <button class="btn btn-success" type="button">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
