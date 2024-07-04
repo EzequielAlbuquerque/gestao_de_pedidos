@@ -52,8 +52,17 @@ class RecuperarProdutos {
 }
 
 class AddProduto {
-  constructor(qtd) {
+  constructor(cliente, data, pedido, cod, descricao, qtd, valor, total) {
+    this.cliente = cliente;
+    this.data = data;
+    this.pedido = pedido;
+    this.cod = cod;
+    this.descrição = descricao;
     this.qtd = parseInt(qtd);
+    this.valor = parseFloat(valor);
+    this.total = parseFloat(total)
+
+
   }
   recuperarQtdProduto() {
     let recuperarQtd = localStorage.getItem("produtos");
@@ -73,6 +82,21 @@ class AddProduto {
           "Produto não tem estoque";
       }
     }
+  }
+  recuperarDados(){
+    let dados = {
+      cliente: this.cliente,
+      data: this.data,
+      pedido: this.pedido,
+      cod: this.cod,
+      descricao: this.descricao,
+      qtd: this.qtd,
+      valor: this.valor,
+      total: this.total
+
+    }
+
+    return dados
   }
 }
 
@@ -103,16 +127,25 @@ export function eventPesquisaCliente() {
       ev.preventDefault();
 
       let cod = document.getElementById("cod").value;
-
+0
       RecuperarProdutos.recuperarProdutoCod(cod);
     });
 
   document.getElementById("addProduto").addEventListener("click", (ep) => {
     ep.preventDefault();
-    let cod = document.getElementById("cod").value;
+    let cliente = document.getElementById("PeidoCliente");
+    let data = document.getElementById("data");
+    let pedido = document.getElementById("nPedido");
+    let cod = document.getElementById("cod");
+    let qtd = document.getElementById("qtd");
+    let descricao = document.getElementById("descricao");
+    let valor = document.getElementById("valor");
+    let total = document.getElementById("total");
+    
 
-    let add = new AddProduto(qtd.value);
-    add.subitrairQtdProduto(cod);
+    let add = new AddProduto(cliente.value, data.value, pedido.value, cod.value, qtd.value, descricao.value, valor.value, total.value);
+    add.subitrairQtdProduto(cod.value);
+    console.log(add.recuperarDados())
   });
   valor.addEventListener("blur", () => {
     let qtd = document.getElementById("qtd");
@@ -128,6 +161,8 @@ export function eventPesquisaCliente() {
   });
 
   document.getElementById("btnPedido").addEventListener("click", () => {
+    document.querySelector(".modalContent").style.display = "block";
+    document.querySelector(".Modal").style.opacity = "10";
     let button = document.querySelectorAll(".btns");
     button.forEach((b) => {
       b.disabled = true;
@@ -141,12 +176,11 @@ export function eventPesquisaCliente() {
 
       return i;
     });
-
-    document.querySelector(".Modal").style.opacity = "10";
   });
 
   document.getElementById("btnFechar").addEventListener("click", () => {
     document.querySelector(".Modal").style.opacity = "0";
+    document.querySelector(".modalContent").style.display = "none";
     let button = document.querySelectorAll(".btns");
     button.forEach((b) => {
       b.disabled = false;
