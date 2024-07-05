@@ -122,6 +122,12 @@ main {
   top: 25px;
   transition: 0.4s;
 }
+#msgErrorPedido{
+  position: fixed;
+  top: 5px;
+  transition: 0.4s;
+
+}
 
 #msgError i,
 #msgSuccsess i {

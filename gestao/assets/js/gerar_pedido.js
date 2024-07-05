@@ -58,7 +58,7 @@ class AddProduto {
     this.pedido = pedido;
     this.cod = cod;
     this.descricao = descricao;
-    this.qtd = parseFloat(qtd);
+    this.qtd = parseInt(qtd);
     this.valor = parseFloat(valor);
     this.total = total
 
@@ -90,8 +90,8 @@ class AddProduto {
       pedido: this.pedido,
       cod: this.cod,
       descricao: this.descricao,
-      qtd: this.qtd || 0,
-      valor_und: this.valor ||0,
+      qtd: parseInt(this.qtd) || 0,
+      valor_und: this.valor || 0,
       total: this.total || 0
 
     }
@@ -139,7 +139,7 @@ export function eventPesquisaCliente() {
     let cod = document.getElementById("cod").value;
     let descricao = document.getElementById("descricao").value;
     let qtd = document.getElementById("qtd").value;
-    let valor = document.getElementById("valor").value;
+    let valor = parseFloat(document.getElementById("valor").value);
     let total = document.getElementById("total").value;
     
 
@@ -163,31 +163,31 @@ export function eventPesquisaCliente() {
     linha.insertCell(1).innerHTML = add.recuperarDados().cod
     linha.insertCell(2).innerHTML = add.recuperarDados().descricao.toLowerCase()
     linha.insertCell(3).innerHTML = add.recuperarDados().qtd
-    linha.insertCell(4).innerHTML = parseFloat(add.recuperarDados().valor).toLocaleString("pt-BR", {
+    linha.insertCell(4).innerHTML = parseFloat(add.recuperarDados().valor_und).toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     }); 
-    linha.insertCell(5).innerHTML = add.recuperarDados().total
+    linha.insertCell(5).innerHTML = add.recuperarDados().total.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }); 
     linha.insertCell(6).append(btn)
 
     
-    
-    
-
-    
+  
 
   });
   valor.addEventListener("blur", () => {
     let qtd = document.getElementById("qtd");
-    let valor = document.getElementById("valor");
+    let valor = document.getElementById("valor").value.replace(',', '.');
     let total = document.getElementById("total");
-    let soma = qtd.value * parseFloat(valor.value.replace(',', '.'));
-    if (valor.value) {
-      total.value = parseFloat(soma).toLocaleString("pt-BR", {
+    let soma = qtd.value * valor;
+    
+    total.value = parseFloat(soma).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
       });
-    }
+    
   });
 
   document.getElementById("btnPedido").addEventListener("click", () => {
