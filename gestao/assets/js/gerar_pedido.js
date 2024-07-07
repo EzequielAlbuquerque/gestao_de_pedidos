@@ -60,9 +60,7 @@ class AddProduto {
     this.descricao = descricao;
     this.qtd = parseInt(qtd);
     this.valor = parseFloat(valor);
-    this.total = total
-
-
+    this.total = total;
   }
   recuperarQtdProduto() {
     let recuperarQtd = localStorage.getItem("produtos");
@@ -83,7 +81,7 @@ class AddProduto {
       }
     }
   }
-  recuperarDados(){
+  recuperarDados() {
     let dados = {
       cliente: this.cliente,
       data: this.data,
@@ -92,15 +90,15 @@ class AddProduto {
       descricao: this.descricao,
       qtd: parseInt(this.qtd) || 0,
       valor_und: this.valor || 0,
-      total: this.total || 0
+      total: this.total || 0,
+    };
 
-    }
-
-    return dados
+    return dados;
   }
 }
 
 export function eventPesquisaCliente() {
+  //----- Pesquisa de cliente -----//
   document
     .getElementById("pesquisar-cliente")
     .addEventListener("click", (e) => {
@@ -109,7 +107,7 @@ export function eventPesquisaCliente() {
       let Gp = new GerarPedido();
 
       if (GerarPedido.converterDados(Cliente)) {
-        document.getElementById("PeidoCliente").value = Cliente.toUpperCase();
+        document.getElementById("PedidoCliente").value = Cliente.toUpperCase();
         document.getElementById("Cliente").value = "";
         let dataAtual = new Date();
         document.getElementById("data").value = dataAtual.toLocaleDateString();
@@ -127,102 +125,148 @@ export function eventPesquisaCliente() {
       ev.preventDefault();
 
       let cod = document.getElementById("cod").value;
-0
+
       RecuperarProdutos.recuperarProdutoCod(cod);
     });
-   let n = 0
+  //----- Adição dos produtos -----//
+  let n = 0;
   document.getElementById("addProduto").addEventListener("click", (ep) => {
     ep.preventDefault();
-    let cliente = document.getElementById("PeidoCliente").value;
+
+    let cliente = document.getElementById("PedidoCliente").value;
     let data = document.getElementById("data").value;
     let pedido = document.getElementById("nPedido").value;
     let cod = document.getElementById("cod").value;
     let descricao = document.getElementById("descricao").value;
     let qtd = document.getElementById("qtd").value;
-    let valor = parseFloat(document.getElementById("valor").value);
+    let valor = parseFloat(
+      document.getElementById("valor").value.replace(",", ".")
+    );
     let total = document.getElementById("total").value;
-    
 
-    let add = new AddProduto(cliente, data, pedido, cod, descricao, qtd, valor, total);
-    add.subtrairQtdProduto(cod);
-    
+    if (
+      cliente &&
+      descricao &&
+      data &&
+      pedido &&
+      cod &&
+      qtd &&
+      valor &&
+      total
+    ) {
+      let add = new AddProduto(
+        cliente,
+        data,
+        pedido,
+        cod,
+        descricao,
+        qtd,
+        valor,
+        total
+      );
+      add.subtrairQtdProduto(cod);
 
-    add.recuperarDados()
+      add.recuperarDados();
 
-    n++
-    let btn = document.createElement('button')
-    btn.innerHTML = '<i class="fa-solid fa-trash"></i>'
-    btn.style.border = 'none'
-    btn.classList.add('bg-info')
-    document.getElementById('contentTable').style.display = 'block'
-    document.getElementById('dataPedido').innerHTML = add.recuperarDados().data
-    document.getElementById('numeroPedido').innerHTML = `Pedido: ${add.recuperarDados().pedido}`
-    let table = document.getElementById('bTable')
-    let linha = table.insertRow()
-    linha.insertCell(0).innerHTML = n
-    linha.insertCell(1).innerHTML = add.recuperarDados().cod
-    linha.insertCell(2).innerHTML = add.recuperarDados().descricao.toLowerCase()
-    linha.insertCell(3).innerHTML = add.recuperarDados().qtd
-    linha.insertCell(4).innerHTML = parseFloat(add.recuperarDados().valor_und).toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }); 
-    linha.insertCell(5).innerHTML = add.recuperarDados().total.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }); 
-    linha.insertCell(6).append(btn)
-
-    
-  
-
-  });
-  valor.addEventListener("blur", () => {
-    let qtd = document.getElementById("qtd");
-    let valor = document.getElementById("valor").value.replace(',', '.');
-    let total = document.getElementById("total");
-    let soma = qtd.value * valor;
-    
-    total.value = parseFloat(soma).toLocaleString("pt-BR", {
+      n++;
+      let btn = document.createElement("button");
+      btn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+      btn.style.border = "none";
+      btn.classList.add("bg-info");
+      document.getElementById("contentTable").style.display = "block";
+      document.getElementById("clientePedido").innerHTML = add
+        .recuperarDados()
+        .cliente.toLowerCase();
+      document.getElementById("dataPedido").innerHTML =
+        add.recuperarDados().data;
+      document.getElementById("numeroPedido").innerHTML = `Pedido: ${
+        add.recuperarDados().pedido
+      }`;
+      let table = document.getElementById("bTable");
+      let linha = table.insertRow();
+      linha.id = `linha${n}`;
+      linha.insertCell(0).innerHTML = n;
+      linha.insertCell(1).innerHTML = add.recuperarDados().cod;
+      linha.insertCell(2).innerHTML = add
+        .recuperarDados()
+        .descricao.toLowerCase();
+      linha.insertCell(3).innerHTML = add.recuperarDados().qtd;
+      linha.insertCell(4).innerHTML = parseFloat(
+        add.recuperarDados().valor_und
+      ).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
       });
-    
+      linha.insertCell(5).innerHTML = add
+        .recuperarDados()
+        .total.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+      linha.insertCell(6).append(btn);
+
+      document.getElementById("cod").value = "";
+      document.getElementById("descricao").value = "";
+      document.getElementById("qtd").value = "";
+      document.getElementById("valor").value = "";
+      document.getElementById("total").value = "";
+      document.getElementById("textCod").innerText = "";
+      let opacity = document.querySelectorAll(".opc");
+      opacity.forEach((o) => {
+        o.style.display = "none";
+      });
+
+      let rows = table.rows;
+      //----- Botao de exclusao de produto da lista de pedidos -----//
+      btn.addEventListener("click", () => {
+        linha.remove();
+        for (let i = 0; i < rows.length; i++) {
+          rows[i].id = `linha${i + 1}`;
+          rows[i].cells[0].innerText = i + 1;
+        }
+
+        n = rows.length;
+      });
+    } else {
+      setTimeout(() => {
+        document.getElementById("msgErrorPedido").style.opacity = "10";
+      });
+      setTimeout(() => {
+        document.getElementById("msgErrorPedido").style.opacity = "0";
+      }, 4000);
+    }
+  });
+  //----- soma dos valores -----//
+  valor.addEventListener("blur", () => {
+    let qtd = document.getElementById("qtd");
+    let valor = document.getElementById("valor").value.replace(",", ".");
+    let total = document.getElementById("total");
+    let soma = qtd.value * valor;
+
+    total.value = parseFloat(soma).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
   });
 
+  //----- modal -----//
   document.getElementById("btnPedido").addEventListener("click", () => {
-    document.querySelector(".modalContent").style.display = "block";
-    document.querySelector(".Modal").style.opacity = "10";
-    let button = document.querySelectorAll(".btns");
-    button.forEach((b) => {
-      b.disabled = true;
-
-      return b;
-    });
-
-    let input = document.querySelectorAll("input");
-    input.forEach((i) => {
-      i.readOnly = true;
-
-      return i;
-    });
+    let contentModal = document.querySelector("#modalContent");
+    let modal = document.querySelector("#modal");
+    contentModal.classList.toggle("hide");
+    modal.classList.toggle("hide");
   });
 
   document.getElementById("btnFechar").addEventListener("click", () => {
-    document.querySelector(".Modal").style.opacity = "0";
-    document.querySelector(".modalContent").style.display = "none";
-    let button = document.querySelectorAll(".btns");
-    button.forEach((b) => {
-      b.disabled = false;
+    let contentModal = document.querySelector("#modalContent");
+    let modal = document.querySelector("#modal");
+    contentModal.classList.toggle("hide");
+    modal.classList.toggle("hide");
+  });
 
-      return b;
-    });
-
-    let input = document.querySelectorAll("input");
-    input.forEach((i) => {
-      i.readOnly = false;
-
-      return i;
-    });
+  //----- salvar pedido no localStorge -----//
+  document.getElementById("confirmarPedido").addEventListener("click", () => {
+    let table = document.getElementById("linha1").value;
+    console.log(table);
   });
 }

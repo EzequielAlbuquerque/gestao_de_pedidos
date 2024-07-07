@@ -45,7 +45,11 @@ body,
 }
 
 .activeSidebar {
-  width: 244px !important;
+  width: 230px !important;
+  box-shadow: 2px 0 5px 1px rgba(0, 0, 0, 0.1);
+ z-index: 3;
+
+ 
 }
 
 .activeLogo {
@@ -54,6 +58,7 @@ body,
 
 .activeH6 {
   display: block !important;
+  text-align: center;
 }
 
 .activeNav {
@@ -118,65 +123,87 @@ main {
 
 #msgError,
 #msgSuccsess {
+  width: auto!important;
   position: fixed;
   top: 25px;
+  left: 30%;
   transition: 0.4s;
 }
 #msgErrorPedido{
   position: fixed;
-  top: 5px;
+  top: 0px;
+  left :30%;
   transition: 0.4s;
+  width: auto!important;
+  
 
 }
 
 #msgError i,
-#msgSuccsess i {
+#msgSuccsess i, #msgErrorPedido i{
   font-size: 1.8rem;
 }
 
-.modalContent {
+#modalContent.hide, #modal.hide{
+  opacity: 0;
+  pointer-events: none;
+  
+}
+#modal.hide{
+  top: 0;
+}
+
+
+#modalContent, #modal{
+  transition: 0.3s;
+  opacity: 1;
+
+}
+
+#modalContent {
   width: 100%;
   height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  display: none;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 5;
 }
 
-.Modal {
+#modal {
   width: 20%;
-  background-color: #0c2d00;
+  background-color: #fff;
   border-radius: 10px;
   position: fixed;
   top: 30%;
   left: 30%;
   padding: 0 10px;
-  opacity: 10;
-  transition: 0.5s;
+  
 }
-.modalItle {
-  border-bottom: solid 1px #a2a29f;
-  color: #fff;
+#modalTitulo {
+  border-bottom: solid 1px #a29fa2;
+  color: #000;
   padding: 0.5rem;
 }
-.modalItle h3 {
+#modalTitulo h3 {
   margin: 0;
   padding: 5px 0;
 }
 
-.modalBody {
+#modalBody {
   padding: 0.5rem;
   border-bottom: solid 1px #a29fa2;
-  color: #fff;
+  color: #000;
 }
 
-.modalBody p {
+#modalBody p {
   margin: 0;
   padding: 5px 0;
 }
-.btnModal {
+#btnModal {
   padding: 0.5rem;
   display: flex;
   justify-content: right;
   gap: 10px;
 }
+
