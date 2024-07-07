@@ -266,7 +266,30 @@ export function eventPesquisaCliente() {
 
   //----- salvar pedido no localStorge -----//
   document.getElementById("confirmarPedido").addEventListener("click", () => {
-    let table = document.getElementById("linha1").value;
-    console.log(table);
+    let tab = document.getElementById("bTable")
+    let clienteP = document.getElementById('PedidoCliente').value
+    let pedidoP = document.getElementById('nPedido').value
+    let rows = tab.rows
+    let pedidos = []
+
+    for(let i = 1; i < rows.length; i++){
+      let row = rows[i]
+      let produtos ={
+        cliente: clienteP,
+        pedido: pedidoP,
+        cod: row.cells[1].innerText,
+        descricao: row.cells[2].innerText,
+        qtd: row.cells[3].innerText,
+        valor: parseFloat(row.cells[4].innerText.replace('R$', '').replace('.', '').replace(',', '.')),
+        total: parseFloat(row.cells[5].innerText.replace('R$', '').replace('.', '').replace(',', '.')),
+
+      }
+      pedidos.push(produtos)
+     
+    }
+    localStorage.setItem('pedidos', JSON.stringify(pedidos))
+    alert('tudo certo')
+
+  
   });
 }
