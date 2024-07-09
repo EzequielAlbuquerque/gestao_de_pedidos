@@ -3,6 +3,12 @@ class GerarPedido {
     if (!localStorage.getItem("NumeroPedido")) {
       localStorage.setItem("NumeroPedido", 100);
     }
+
+    if (!localStorage.getItem("pedidos")) {
+      localStorage.setItem("pedidos", JSON.stringify([]));
+    }
+
+    
   }
   static recuperarDadosCliente() {
     let DadosCliente = localStorage.getItem("cliente");
@@ -97,6 +103,52 @@ class AddProduto {
   }
 }
 
+class SalvarPedidoLocalStorage{
+  constructor(table, cliente, pedido){
+
+    this.table = table
+    this.cliente = cliente
+    this.pedido = pedido
+
+    if (!localStorage.getItem("pedidos")) {
+      localStorage.setItem("pedidos", JSON.stringify([]));
+    }
+
+  }
+  recuperdarPedidos(){
+    let pedidos = JSON.parse(localStorage.getItem('pedidos'))
+    return pedidos
+  }
+  salvarPedido(){
+    let pedidos = this.recuperdarPedidos()
+    let rows = this.table.rows
+    let produtos = []
+
+    for(let i = 0; i < rows.length; i++){
+      let cod = rows[i].cells[1].textContent 
+      let descricao = rows[i].cells[2].textContent
+
+      
+      let produto ={
+        cod: cod,
+        descricao: descricao,
+   
+      }
+      produtos.push(produto)
+    
+    }
+    let pedido = {
+      cliente: this.cliente,
+      pedido: this.pedido,
+      produtos: produtos
+    }
+     pedidos.push(pedido)
+    return localStorage.setItem('pedidos', JSON.stringify(pedidos) )
+
+  }
+
+}
+
 export function eventPesquisaCliente() {
   //----- Pesquisa de cliente -----//
   document
@@ -188,8 +240,8 @@ export function eventPesquisaCliente() {
       linha.insertCell(0).innerHTML = n;
       linha.insertCell(1).innerHTML = add.recuperarDados().cod;
       linha.insertCell(2).innerHTML = add
-        .recuperarDados()
-        .descricao.toLowerCase();
+      .recuperarDados()
+      .descricao.toLowerCase();
       linha.insertCell(3).innerHTML = add.recuperarDados().qtd;
       linha.insertCell(4).innerHTML = parseFloat(
         add.recuperarDados().valor_und
@@ -266,29 +318,43 @@ export function eventPesquisaCliente() {
 
   //----- salvar pedido no localStorge -----//
   document.getElementById("confirmarPedido").addEventListener("click", () => {
+   
+   
+
     let tab = document.getElementById("bTable")
     let clienteP = document.getElementById('PedidoCliente').value
     let pedidoP = document.getElementById('nPedido').value
-    let rows = tab.rows
-    let pedidos = []
+    /*let rows = tab.rows
+    let produtos = []*/
+    let pdPedidos = new SalvarPedidoLocalStorage(tab, clienteP, pedidoP)
 
-    for(let i = 1; i < rows.length; i++){
-      let row = rows[i]
-      let produtos ={
-        cliente: clienteP,
-        pedido: pedidoP,
-        cod: row.cells[1].innerText,
-        descricao: row.cells[2].innerText,
-        qtd: row.cells[3].innerText,
-        valor: parseFloat(row.cells[4].innerText.replace('R$', '').replace('.', '').replace(',', '.')),
-        total: parseFloat(row.cells[5].innerText.replace('R$', '').replace('.', '').replace(',', '.')),
+    pdPedidos.salvarPedido()
+   
 
+    /*for(let i = 0; i < tab.rows.length; i++){
+      let cod = rows[i].cells[1].textContent 
+      let descricao = rows[i].cells[2].textContent
+
+      
+      let produto ={
+        cod: cod,
+        descricao: descricao,
+   
       }
-      pedidos.push(produtos)
-     
+      produtos.push(produto)
+    
     }
-    localStorage.setItem('pedidos', JSON.stringify(pedidos))
-    alert('tudo certo')
+    let pedido = {
+      cliente: clienteP,
+      pedido: pedidoP,
+      produtos: produtos
+    }
+    
+      localStorage.setItem('pedidos', JSON.stringify(pedido))*/
+  
+    
+   
+    
 
   
   });
