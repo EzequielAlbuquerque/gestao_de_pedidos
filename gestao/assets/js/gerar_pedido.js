@@ -104,11 +104,12 @@ class AddProduto {
 }
 
 class SalvarPedidoLocalStorage{
-  constructor(table, cliente, pedido){
+  constructor(table, cliente, pedido, data){
 
     this.table = table
-    this.cliente = cliente
+    this.cliente = cliente.toLowerCase()
     this.pedido = pedido
+    this.data = data
 
     if (!localStorage.getItem("pedidos")) {
       localStorage.setItem("pedidos", JSON.stringify([]));
@@ -125,21 +126,31 @@ class SalvarPedidoLocalStorage{
     let produtos = []
 
     for(let i = 0; i < rows.length; i++){
+      let indice = parseInt(rows[i].cells[0].textContent) 
       let cod = rows[i].cells[1].textContent 
       let descricao = rows[i].cells[2].textContent
+      let qtd = rows[i].cells[3].textContent
+      let valor = rows[i].cells[4].textContent
+      let total = rows[i].cells[5].textContent
 
       
       let produto ={
+        indice: indice,
         cod: cod,
         descricao: descricao,
+        qtd: qtd,
+        valorUnid: valor,
+        total: total
    
       }
       produtos.push(produto)
     
     }
     let pedido = {
+
       cliente: this.cliente,
       pedido: this.pedido,
+      data: this.data,
       produtos: produtos
     }
      pedidos.push(pedido)
@@ -236,6 +247,11 @@ export function eventPesquisaCliente() {
       }`;
       let table = document.getElementById("bTable");
       let linha = table.insertRow();
+      
+      
+      
+    
+      
       linha.id = `linha${n}`;
       linha.insertCell(0).innerHTML = n;
       linha.insertCell(1).innerHTML = add.recuperarDados().cod;
@@ -257,6 +273,25 @@ export function eventPesquisaCliente() {
         });
       linha.insertCell(6).append(btn);
 
+     let soma = 0
+     for(let l = 0, row; row = table.rows[l]; l++ ){
+        let colls = row.cells[5]
+        let valor = parseFloat(colls.innerText.replace('R$', '').replace(',', '.'));
+        soma += valor;
+            
+     }
+     document.getElementById("Ttotal").textContent = `Total: ${soma.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+  })}`
+    
+        
+
+        
+     
+
+
+    
       document.getElementById("cod").value = "";
       document.getElementById("descricao").value = "";
       document.getElementById("qtd").value = "";
@@ -324,33 +359,12 @@ export function eventPesquisaCliente() {
     let tab = document.getElementById("bTable")
     let clienteP = document.getElementById('PedidoCliente').value
     let pedidoP = document.getElementById('nPedido').value
-    /*let rows = tab.rows
-    let produtos = []*/
-    let pdPedidos = new SalvarPedidoLocalStorage(tab, clienteP, pedidoP)
+    let data = document.getElementById('data').value
+  
+    let pdPedidos = new SalvarPedidoLocalStorage(tab, clienteP, pedidoP, data)
 
     pdPedidos.salvarPedido()
    
-
-    /*for(let i = 0; i < tab.rows.length; i++){
-      let cod = rows[i].cells[1].textContent 
-      let descricao = rows[i].cells[2].textContent
-
-      
-      let produto ={
-        cod: cod,
-        descricao: descricao,
-   
-      }
-      produtos.push(produto)
-    
-    }
-    let pedido = {
-      cliente: clienteP,
-      pedido: pedidoP,
-      produtos: produtos
-    }
-    
-      localStorage.setItem('pedidos', JSON.stringify(pedido))*/
   
     
    
