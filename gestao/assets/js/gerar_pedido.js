@@ -104,12 +104,13 @@ class AddProduto {
 }
 
 class SalvarPedidoLocalStorage{
-  constructor(table, cliente, pedido, data){
+  constructor(table, cliente, pedido, data, totalP){
 
     this.table = table
     this.cliente = cliente.toLowerCase()
     this.pedido = pedido
     this.data = data
+    this.totalP = parseFloat(totalP)
 
     if (!localStorage.getItem("pedidos")) {
       localStorage.setItem("pedidos", JSON.stringify([]));
@@ -126,7 +127,7 @@ class SalvarPedidoLocalStorage{
     let produtos = []
 
     for(let i = 0; i < rows.length; i++){
-      let indice = parseInt(rows[i].cells[0].textContent) 
+      let indice = rows[i].cells[0].textContent
       let cod = rows[i].cells[1].textContent 
       let descricao = rows[i].cells[2].textContent
       let qtd = rows[i].cells[3].textContent
@@ -151,6 +152,7 @@ class SalvarPedidoLocalStorage{
       cliente: this.cliente,
       pedido: this.pedido,
       data: this.data,
+      totalPedido: this.totalP,
       produtos: produtos
     }
      pedidos.push(pedido)
@@ -273,25 +275,17 @@ export function eventPesquisaCliente() {
         });
       linha.insertCell(6).append(btn);
 
-     let soma = 0
-     for(let l = 0, row; row = table.rows[l]; l++ ){
-        let colls = row.cells[5]
-        let valor = parseFloat(colls.innerText.replace('R$', '').replace(',', '.'));
-        soma += valor;
-            
-     }
-     document.getElementById("Ttotal").textContent = `Total: ${soma.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-  })}`
+     
+
+ 
     
-        
+      atualizarSoma()
 
         
      
 
 
-    
+      document.getElementById('btnPedido').disabled = false
       document.getElementById("cod").value = "";
       document.getElementById("descricao").value = "";
       document.getElementById("qtd").value = "";
@@ -313,6 +307,7 @@ export function eventPesquisaCliente() {
         }
 
         n = rows.length;
+        atualizarSoma()
       });
     } else {
       setTimeout(() => {
@@ -321,7 +316,9 @@ export function eventPesquisaCliente() {
       setTimeout(() => {
         document.getElementById("msgErrorPedido").style.opacity = "0";
       }, 4000);
+      
     }
+   
   });
   //----- soma dos valores -----//
   valor.addEventListener("blur", () => {
@@ -360,10 +357,29 @@ export function eventPesquisaCliente() {
     let clienteP = document.getElementById('PedidoCliente').value
     let pedidoP = document.getElementById('nPedido').value
     let data = document.getElementById('data').value
+    let totalP = document.getElementById('Ttotal').textContent.replace('Total:', '').replace('R$', '').replace(',', '.')
+    
   
-    let pdPedidos = new SalvarPedidoLocalStorage(tab, clienteP, pedidoP, data)
+    let pdPedidos = new SalvarPedidoLocalStorage(tab, clienteP, pedidoP, data, totalP )
 
     pdPedidos.salvarPedido()
+
+    let contentModal = document.querySelector("#modalContent");
+    let modal = document.querySelector("#modal");
+    contentModal.classList.toggle("hide");
+    modal.classList.toggle("hide");
+
+    document.getElementById('btnPedido').disabled = true
+    document.getElementById("bTable").style.display = 'none'
+
+    document.getElementById("cod").value = "";
+    document.getElementById("descricao").value = "";
+    document.getElementById("qtd").value = "";
+    document.getElementById("valor").value = "";
+    document.getElementById("total").value = "";
+    document.getElementById("textCod").innerText = "";
+
+
    
   
     
@@ -372,4 +388,20 @@ export function eventPesquisaCliente() {
 
   
   });
+
+  function atualizarSoma() {
+    let soma = 0
+    let table = document.getElementById("bTable")
+    for(let l = 0, row; row = table.rows[l]; l++ ){
+       let colls = row.cells[5]
+       let valor = parseFloat(colls.innerText.replace('R$', '').replace(',', '.'));
+       soma += valor;
+           
+    }
+    document.getElementById("Ttotal").textContent = `Total: ${soma.toLocaleString("pt-BR", {
+     style: "currency",
+     currency: "BRL",
+ })}`
+    
+  }
 }

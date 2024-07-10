@@ -45,16 +45,16 @@ export function eventCadastroProduto() {
   document.getElementById("btnCadastrar").addEventListener("click", (event) => {
     event.preventDefault();
 
-    let cod = document.getElementById("cod");
-    let descricao = document.getElementById("descricao");
-    let qtd = document.getElementById("qtd");
-    let custo = document.getElementById("custo");
+    let cod = document.getElementById("cod").value;
+    let descricao = document.getElementById("descricao").value.toLowerCase();
+    let qtd = document.getElementById("qtd").value;
+    let custo = document.getElementById("custo").value.replace(',', '.');
 
     let Cp = new CadastrarProduto(
-      cod.value,
-      descricao.value.toLowerCase(),
-      qtd.value,
-      custo.value
+      cod,
+      descricao,
+      qtd,
+      custo
     );
 
     if (
