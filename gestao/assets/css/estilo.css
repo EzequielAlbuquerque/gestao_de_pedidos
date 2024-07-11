@@ -5,9 +5,10 @@
 body,
 .content,
 .bg-home {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background-color: #fef9f6;
+  overflow: auto;
 }
 
 .topo {
@@ -15,6 +16,7 @@ body,
   width: 100%;
   position: fixed;
   top: 0;
+  z-index: 3;
 }
 
 .topo span {
@@ -32,24 +34,24 @@ body,
   font-size: 2.3rem;
 }
 
+.bg-content {
+  height: calc(100vh - 50px);
+}
+
 .sidebar {
   background: #ecedee;
   width: 44px;
   display: block;
   transition: 0.5s;
   overflow: hidden;
-  position: fixed;
-  left: 0;
-  top: 50px;
   height: 100vh;
+  position: fixed;
+  top: 50px;
 }
 
 .activeSidebar {
-  width: 230px !important;
+  width: 244px !important;
   box-shadow: 2px 0 5px 1px rgba(0, 0, 0, 0.1);
- z-index: 3;
-
- 
 }
 
 .activeLogo {
@@ -109,12 +111,15 @@ div img {
 }
 
 main {
-  position: fixed;
-  top: 50px;
-  left: 220px;
-  height: 100vh;
-  overflow-y: auto;
+  margin-top: 50px;
+  margin-left: 30px;
+  height: calc(100vh - 50px);
   width: 100vw;
+  transition: 0.5s;
+}
+
+.activeMain {
+  margin-left: 244px;
 }
 
 .disable {
@@ -123,50 +128,51 @@ main {
 
 #msgError,
 #msgSuccsess {
-  width: auto!important;
+  width: auto !important;
   position: fixed;
   top: 25px;
   left: 30%;
   transition: 0.4s;
+  z-index: 4;
 }
-#msgErrorPedido{
+#msgErrorPedido,
+#msgSuccsessGPedido {
   position: fixed;
   top: 0px;
-  left :30%;
+  left: 30%;
   transition: 0.4s;
-  width: auto!important;
-  
-
+  width: auto !important;
+  z-index: 5;
 }
 
 #msgError i,
-#msgSuccsess i, #msgErrorPedido i{
+#msgSuccsess i,
+#msgErrorPedido i {
   font-size: 1.8rem;
 }
 
-#modalContent.hide, #modal.hide{
+#modalContent.hide,
+#modal.hide {
   opacity: 0;
   pointer-events: none;
-  
 }
-#modal.hide{
+#modal.hide {
   top: 0;
 }
 
-
-#modalContent, #modal{
+#modalContent,
+#modal {
   transition: 0.3s;
   opacity: 1;
-
 }
 
 #modalContent {
-  width: 100%;
+  width: 100vw;
   height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 5;
 }
 
@@ -178,7 +184,6 @@ main {
   top: 30%;
   left: 30%;
   padding: 0 10px;
-  
 }
 #modalTitulo {
   border-bottom: solid 1px #a29fa2;
@@ -206,4 +211,66 @@ main {
   justify-content: right;
   gap: 10px;
 }
+#btnPedido {
+  display: none;
+}
 
+#modalContent2{
+  width: 100vw;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 5;
+}
+#modal2{
+  width: 30%;
+  background-color: #fff;
+  border-radius: 10px;
+  position: fixed;
+  top: 30%;
+  left: 30%;
+  padding: 0 10px;
+}
+#modalTitulo2 {
+  border-bottom: solid 1px #a29fa2;
+  color: #009605;
+  padding: 0.5rem;
+  text-align: center;
+}
+#modalTitulo h3 {
+  margin: 0;
+  padding: 5px 0;
+}
+
+#modalBody2 {
+  padding: 0.5rem;
+  border-bottom: solid 1px #a29fa2;
+  color: #000;
+  font-size: 1.3rem;
+}
+#modalBody2 p {
+  margin: 0;
+  padding: 5px 0;
+}
+#btnModal2 {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: right;
+  gap: 10px;
+}
+#modalContent2.hide,
+#modal2.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+#modal2.hide {
+  top: 0;
+}
+
+#modalContent2,
+#modal2 {
+  transition: 0.3s;
+  opacity: 1;
+}

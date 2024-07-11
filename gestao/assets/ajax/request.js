@@ -1,5 +1,5 @@
 import { eventCadastroCliente } from "/gestao/assets/js/cadastrar_cliente.js";
-import { eventPesquisaCliente } from "/gestao/assets/js/gerar_pedido.js";
+import { eventGerarPedido } from "/gestao/assets/js/gerar_pedido.js";
 import { eventCadastroProduto } from "/gestao/assets/js/cadastrar_produto.js";
 
 let PgCadastrarCliente = "/gestao/pages/cadastrar_cliente.html";
@@ -25,7 +25,8 @@ document.getElementById("gerarPedido").addEventListener("click", () => {
     .then((resp) => resp.text())
     .then((result) => {
       content.innerHTML = result;
-      eventPesquisaCliente()
+      eventGerarPedido()
+    
     });
 });
 
