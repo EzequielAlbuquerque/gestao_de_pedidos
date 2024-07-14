@@ -274,3 +274,6 @@ main {
   transition: 0.3s;
   opacity: 1;
 }
+.bg-table{
+  background: #fff5d7;
+}

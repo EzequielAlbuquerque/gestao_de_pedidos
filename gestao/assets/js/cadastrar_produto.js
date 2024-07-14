@@ -1,9 +1,9 @@
 class CadastrarProduto {
   constructor(cod, descricao, qtd, custo) {
     this.cod = cod;
-    this.descricao = descricao;
+    this.descricao = descricao.toLowerCase();
     this.qtd = parseInt(qtd);
-    this.custo = parseFloat(custo);
+    this.custo = parseFloat(custo.replace(',', '.'));
   }
   recuperarListaProduto() {
     let produtos = localStorage.getItem("produtos");
@@ -45,16 +45,16 @@ export function eventCadastroProduto() {
   document.getElementById("btnCadastrar").addEventListener("click", (event) => {
     event.preventDefault();
 
-    let cod = document.getElementById("cod").value;
-    let descricao = document.getElementById("descricao").value.toLowerCase();
-    let qtd = document.getElementById("qtd").value;
-    let custo = document.getElementById("custo").value.replace(',', '.');
+    let cod = document.getElementById("cod");
+    let descricao = document.getElementById("descricao");
+    let qtd = document.getElementById("qtd");
+    let custo = document.getElementById("custo");
 
     let Cp = new CadastrarProduto(
-      cod,
-      descricao,
-      qtd,
-      custo
+      cod.value,
+      descricao.value,
+      qtd.value,
+      custo.value
     );
 
     if (

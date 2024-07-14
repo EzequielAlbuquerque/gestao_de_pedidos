@@ -23,6 +23,7 @@ document.addEventListener("click", (event) => {
   const menu = document.querySelector(".menu");
   const sidebar = document.querySelector(".sidebar");
   const logo = document.querySelector(".logo");
+  let main = document.querySelector("#container");
   const h6 = document.querySelector("h6");
   const nav = document.querySelectorAll(".desable");
 
@@ -34,6 +35,7 @@ document.addEventListener("click", (event) => {
     sidebar.classList.remove("activeSidebar");
     logo.classList.remove("activeLogo");
     h6.classList.remove("activeH6");
+    main.classList.remove('activeMain')
   }
 });
 
