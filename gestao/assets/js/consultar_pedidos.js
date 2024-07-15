@@ -7,9 +7,9 @@ class ConsultarPedidos {
   static verificarCliente(cliente) {
     let pedidos = this.recuperarPedidos();
 
-    let pedidosCliente = pedidos.filter((p) => p.cliente === cliente);
+    return pedidos.filter((p) => p.cliente === cliente);
 
-    return pedidosCliente;
+  
   }
   static validarCliente(cliente) {
     let Cliente = this.recuperarPedidos();
@@ -18,12 +18,44 @@ class ConsultarPedidos {
   }
 }
 
+class RemoverPedido {
+  static recuperarPedidos(){
+    if (localStorage.getItem("pedidos")) {
+      return JSON.parse(localStorage.getItem("pedidos")) || [];
+    }
+
+  }
+  static removerPedido(nPedido){
+   let pedidos = this.recuperarPedidos()
+   let verificar = pedidos.filter(p => p.pedido === nPedido)
+   pedidos.splice(verificar, 1)
+   return pedidos
+
+}
+static converterListaPedido(){
+  let listaPedido = this.removerPedido()
+  return localStorage.setItem('pedidos', JSON.stringify(listaPedido))
+}
+}
 export function eventConsultarPedido() {
   document.getElementById("pedidoCliente").addEventListener("click", (e) => {
     e.preventDefault();
     let cliente = document.getElementById("nomeCliente");
-
+    
     if (ConsultarPedidos.validarCliente(cliente.value)) {
+      carregarPedidos()
+
+    }
+    else {
+      document.getElementById("pesquisaCliente").innerHTML =
+        "Cliente não possui pedido.";
+    }
+   
+  });
+
+  function carregarPedidos(){
+    let cliente = document.getElementById("nomeCliente");
+  
       document.getElementById("contentForm").style.display = "none";
       let divPedido = document.getElementById("pedidos");
       let divInfo = document.createElement("div");
@@ -36,7 +68,7 @@ export function eventConsultarPedido() {
       BtnNovaConsulta.addEventListener("click", () => {
         let PgConsultarPedido = "/gestao/pages/consultar_pedidos.html";
         let content = document.getElementById("container");
-
+  
         fetch(PgConsultarPedido)
           .then((resp) => resp.text())
           .then((result) => {
@@ -44,13 +76,13 @@ export function eventConsultarPedido() {
             eventConsultarPedido();
           });
       });
-
+  
       divInfo.textContent = `Cliente: ${cliente.value}`;
-
+  
       divPedido.appendChild(divInfo);
-
+  
       let listaPedido = ConsultarPedidos.verificarCliente(cliente.value);
-
+  
       listaPedido.forEach((pedido) => {
         let divInfo = document.createElement("div");
         divInfo.classList.add(
@@ -69,8 +101,25 @@ export function eventConsultarPedido() {
         let btn = document.createElement("button");
         btn.classList.add("btn", "btn-success");
         btn.innerHTML = "Baixar pedido";
-        btn.addEventListener("click", () => {
-          alert("ola");
+        btn.addEventListener("click", (e) => {
+          e.preventDefault()
+
+          let content = document.getElementById('container')
+          let PgConsultarPedido = "/gestao/pages/consultar_pedidos.html"; 
+         
+  
+          fetch(PgConsultarPedido)
+          .then(res => res.text())
+          .then(result =>{
+            content.innerHTML = result
+            eventConsultarPedido()
+
+          })
+
+          carregarPedidos()
+          
+            
+  
         });
         let table = document.createElement("table");
         table.classList.add(
@@ -84,15 +133,15 @@ export function eventConsultarPedido() {
         let head = document.createElement("thead");
         let rowHead = head.insertRow();
         head.classList.add("bg-dark", "text-light");
-
+  
         let body = document.createElement("tbody");
-
+  
         rowHead.insertCell(0).textContent = "Cod:";
         rowHead.insertCell(1).textContent = "Descrição:";
         rowHead.insertCell(2).textContent = "Qtd:";
         rowHead.insertCell(3).textContent = "Valor und:";
         rowHead.insertCell(4).textContent = "Total:";
-
+  
         pedido.produtos.forEach((produtos) => {
           let rowBody = body.insertRow();
           rowBody.insertCell(0).textContent = produtos.cod;
@@ -101,9 +150,9 @@ export function eventConsultarPedido() {
           rowBody.insertCell(3).textContent = produtos.valorUnid;
           rowBody.insertCell(4).textContent = produtos.total;
         });
-
+  
         divPedido.appendChild(divInfo);
-
+  
         divInfo.appendChild(spanData);
         divInfo.appendChild(spanPedido);
         divPedido.appendChild(table);
@@ -113,9 +162,8 @@ export function eventConsultarPedido() {
         divPedido.appendChild(DivBtnNovaConsulta);
         DivBtnNovaConsulta.appendChild(BtnNovaConsulta);
       });
-    } else {
-      document.getElementById("pesquisaCliente").innerHTML =
-        "Cliente não possui pedido.";
-    }
-  });
+    
+  }
+  
 }
+
