@@ -50,6 +50,13 @@ export function eventConsultarPedido() {
       document.getElementById("pesquisaCliente").innerHTML = "Cliente não possui pedido.";
     }
   });
+
+  document.getElementById('todosPedidos').addEventListener('click', (e)=>{
+    e.preventDefault()
+
+    carregarTodosPedidos()
+
+  })
 }
 
 function carregarPedidos() {
@@ -63,6 +70,7 @@ function carregarPedidos() {
 
   let divInfo = document.createElement("div");
   divInfo.classList.add("mb-3", "display-6");
+  divInfo.id = 'clienteDiv'
   divInfo.textContent = `Cliente: ${cliente}`;
   divPedido.appendChild(divInfo);
 
@@ -93,6 +101,7 @@ function carregarPedidos() {
       let removerPedido = new RemoverPedido(nPedido);
       removerPedido.excluirPedido();
       carregarPedidos();
+      verificarPedido ()
     });
 
     divInfo.appendChild(spanData);
@@ -153,4 +162,77 @@ function carregarPedidos() {
   });
   DivBtnNovaConsulta.appendChild(BtnNovaConsulta);
   divPedido.appendChild(DivBtnNovaConsulta);
+}
+function verificarPedido () {
+  let pedidos = ConsultarPedidos.recuperarPedidos()
+  let NomeCliente = document.getElementById('clienteDiv').innerText.replace('Cliente:', '').trim()
+  
+  let verificar = pedidos.some(p => p.cliente === NomeCliente)
+
+  if(!verificar){
+    let NomeCliente = document.getElementById('clienteDiv')
+    NomeCliente.innerHTML = 'Todos os pedidos foram baixados'
+    NomeCliente.classList.add('text-danger', 'd-flex', 'justify-content-center')
+    
+  }
+  
+}
+
+function carregarTodosPedidos(){
+  let pedidos = ConsultarPedidos.recuperarPedidos()
+  document.getElementById("contentForm").style.display = "none"
+
+
+  pedidos.forEach(pedidos =>{
+    let divPedido = document.getElementById('pedidos')
+    let divInfo = document.createElement('div')
+    divInfo.classList.add('border', 'd-flex', 'justify-content-between', 'align-items-center', 'p-2', 'bg-light')
+    let spanCliente = document.createElement('span')
+    spanCliente.innerHTML = `Cliente: ${pedidos.cliente}`
+    let spanData = document.createElement('span')
+    spanData.innerHTML = `Data: ${pedidos.data}` 
+    let spanNpedido = document.createElement('span')
+    spanNpedido.innerHTML = `Pedido: ${pedidos.pedido}` 
+    let btn = document.createElement('button')
+    btn.classList.add('btn', 'btn-success')
+    btn.innerHTML = 'Baixar pedido'
+
+    divPedido.appendChild(divInfo)
+    divInfo.appendChild(spanCliente)
+    divInfo.appendChild(spanData)
+    divInfo.appendChild(spanNpedido)
+    divInfo.appendChild(btn)
+
+    let table = document.createElement('table')
+    table.classList.add( "table",
+      "table-bordered",
+      "mb-4",
+      "bg-table",
+      "fw-bold",
+      "text-center")
+    let thead = document.createElement('thead')
+    thead.classList.add('bg-dark', 'text-white')
+    let rowHead = thead.insertRow()
+
+    rowHead.insertCell(0).textContent = "Cod:";
+    rowHead.insertCell(1).textContent = "Descrição:";
+    rowHead.insertCell(2).textContent = "Qtd:";
+    rowHead.insertCell(3).textContent = "Valor und:";
+    rowHead.insertCell(4).textContent = "Total:";
+
+
+
+
+
+    let tbody = document.createElement('tbody')
+    tbody.classList.add('bg-info')
+
+   
+  
+
+    divPedido.appendChild(table)
+    table.appendChild(thead)
+    table.appendChild(tbody)
+
+  })
 }
