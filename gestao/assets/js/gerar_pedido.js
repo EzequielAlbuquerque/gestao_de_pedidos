@@ -245,7 +245,9 @@ export function eventGerarPedido() {
       linha.insertCell(1).innerHTML = add.recuperarDados().cod;
       linha.insertCell(2).innerHTML = add
         .recuperarDados()
-        .descricao.toLowerCase();
+        .descricao.toLowerCase().charAt(0).toUpperCase() + add
+        .recuperarDados()
+        .descricao.toLowerCase().slice(1) ;
       linha.insertCell(3).innerHTML = add.recuperarDados().qtd;
       linha.insertCell(4).innerHTML = parseFloat(
         add.recuperarDados().valor_und
