@@ -7,20 +7,23 @@
     <title>Estoque</title>
   </head>
   <body>
-    <div class="w-75 pt-3 ms-5">
-      <form class="row pt-3 g-2">
+    <div id="container" class="w-75 pt-3 ms-5">
+      <form id="contentPesquisa" class="row pt-3 g-2">
         <div class="col-md-3 d-flex">
-          <input class="form-control" type="search" placeholder="Código" />
+          <input id="cod" class="form-control" type="text" placeholder="Código" />
         </div>
         <div class="col-md-2">
-          <button type="submit" class="btn btn-primary">Consultar</button>
+          <button id="consultarCod" type="button" class="btn btn-primary">Consultar</button>
         </div>
         <div class="col-md-2">
-          <button type="submit" class="btn btn-primary">
+          <button id="todosProdutos" type="submit" class="btn btn-primary">
             Todos os produtos
           </button>
         </div>
+        <span id="contentInfo"></span>
       </form>
+
+      <div id="produtos"></div>
     </div>
   </body>
 </html>
