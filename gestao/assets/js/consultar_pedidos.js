@@ -235,6 +235,7 @@ function carregarTodosPedidos() {
     let thead = document.createElement("thead");
     thead.classList.add("bg-dark", "text-white", "fw-bold");
     let rowHead = thead.insertRow();
+    rowHead.classList.add('grid2')
 
     rowHead.insertCell(0).textContent = "Cod:";
     rowHead.insertCell(1).textContent = "Descrição:";
@@ -247,6 +248,7 @@ function carregarTodosPedidos() {
 
     pedidos.produtos.forEach((produto) => {
       let rowBody = tbody.insertRow();
+      rowBody.classList.add('grid2')
 
       rowBody.insertCell(0).textContent = produto.cod;
       rowBody.insertCell(1).textContent = produto.descricao;

@@ -7,40 +7,18 @@
     <title>Financeiro</title>
   </head>
   <body>
-    <div class="w-75 pt-3 ms-5">
+    <div id="containerFinance" class="w-75 pt-3 ms-5">
       <form class="row pt-3 g-2">
-        <div class="col-md-4 d-flex">
-          <input
-            class="form-control"
-            type="search"
-            placeholder="Nome do cliente"
-          />
-        </div>
-        <div
-          class="col-md-2 form-check d-flex gap-2 align-items-center justify-content-center"
-        >
-          <input class="form-check-input" type="checkbox" id="check" />
-          <label class="form-check-labe" for="check">Todos</label>
-        </div>
-        <div class="col-md-2">
-          <select class="form-select">
-            <option value="">Mês</option>
-            <option value="janeiro">Janeiro</option>
-            <option value="fevereiro">Fevereiro</option>
-            <option value="marco">Março</option>
-            <option value="abril">Abril</option>
-            <option value="maio">Maio</option>
-            <option value="junho">Junho</option>
-            <option value="Julho">Julho</option>
-            <option value="agosto">Agosto</option>
-            <option value="setembro">Setembro</option>
-            <option value="outubro">Outubro</option>
-            <option value="novembro">Novembro</option>
-            <option value="dezembro">Dezembro</option>
+        <div class="col-md-4">
+          <select id="pesquisa" class="form-select">
+            <option value="">Tipo da pesquisa</option>
+            <option value="cliente">Por cliente</option>
+            <option value="todos">Todos os pedidos</option>
+           
           </select>
         </div>
         <div class="col-md-1">
-          <button class="btn btn-primary" type="submit">Consultar</button>
+          <button id="btn" class="btn btn-primary" type="button">Iniciar</button>
         </div>
       </form>
     </div>
