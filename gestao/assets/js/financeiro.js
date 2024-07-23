@@ -36,6 +36,7 @@ export function eventFinanceiro() {
         input.classList.add("form-control");
         input.setAttribute("type", "text");
         input.setAttribute("placeholder", "Nome do cliente");
+        input.id = 'cliente'
 
         divFinance.appendChild(form);
         form.appendChild(divInput);
@@ -48,6 +49,7 @@ export function eventFinanceiro() {
         labelDataInicio.innerHTML = "Data de inicio:";
         let inputDataInicio = document.createElement("input");
         inputDataInicio.classList.add("form-control");
+        inputDataInicio.id = 'dataInicio'
         inputDataInicio.setAttribute("type", "date");
 
         form.appendChild(divDataInicio);
@@ -61,6 +63,7 @@ export function eventFinanceiro() {
         labelDataFinal.innerHTML = "Data final:";
         let inputDataFinal = document.createElement("input");
         inputDataFinal.classList.add("form-control");
+        inputDataFinal.id = 'dataFinal'
         inputDataFinal.setAttribute("type", "date");
 
         form.appendChild(divdataFinal);
@@ -75,7 +78,31 @@ export function eventFinanceiro() {
         btn.addEventListener('click', (e)=>{
             e.preventDefault()
 
-            console.log(PedididosFinanceiro.recuperarPedidos())
+            let pedidos = PedididosFinanceiro.recuperarPedidos()
+            let dataInicio = document.getElementById('dataInicio').value
+            let dataFinal = document.getElementById('dataFinal').value
+            let cliente = document.getElementById('cliente').value.toLowerCase()
+            dataInicio = dataInicio.split('-')
+            dataFinal = dataFinal.split('-')
+            let dataInicioConv = `${dataInicio[2]}/${dataInicio[1]}/${dataInicio[0]}`
+            let dataFinalConv = `${dataFinal[2]}/${dataFinal[1]}/${dataFinal[0]}`
+
+            
+
+           let pedido =  pedidos.filter(pv => pv.cliente === cliente)
+
+           let result = pedido.filter(d => d.data >= dataInicioConv && d.data <= dataFinalConv)
+
+            console.log(result)
+           
+           
+
+           
+
+            
+               
+
+            
         })
 
         form.appendChild(divBtn);
