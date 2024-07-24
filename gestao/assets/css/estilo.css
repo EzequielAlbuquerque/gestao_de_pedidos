@@ -278,6 +278,10 @@ main {
   background: #fff5d7;
 }
 
+.bg-tableF{
+  background: #f1ebf1;
+}
+
 .grid{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -285,4 +289,10 @@ main {
 .grid2{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.bg-finance{
+  background-color: rgb(71, 81, 215);
+  border-radius: 5%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4  );
 }
