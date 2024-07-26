@@ -95,7 +95,7 @@ export function eventFinanceiro() {
             let divFinance = document.getElementById("finance");
             let table = document.createElement("table", 'ps-0');
 
-            table.classList.add("table", "m-4");
+            table.classList.add("table", "mt-4");
 
             let tHead = document.createElement("thead");
             tHead.classList.add(
@@ -132,25 +132,43 @@ export function eventFinanceiro() {
 
             table.appendChild(tBody);
           });
+          
+         let valores = result.map(v => v.totalPedido)
+         let total = valores.reduce((a,b)=>{
+         return a + b
+         }, 0)
+         
 
           let contentValor = document.createElement('div')
-          contentValor.classList.add('d-flex', 'justify-content-around', 'ms-4')
+          contentValor.classList.add('grid_finance')
           let divValorTotal = document.createElement('div')
-          divValorTotal.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold')
+          divValorTotal.innerHTML = 'Valor total:'
+          divValorTotal.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
           let spanInfoTotal = document.createElement('span')
-          spanInfoTotal.innerHTML = 'Valor total:'
+          spanInfoTotal.classList.add('mt-3')
+          spanInfoTotal.innerHTML = total.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          })
           let divAreceber = document.createElement('div')
-          divAreceber.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold')
+          divAreceber.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
+          divAreceber.innerHTML ='Valor pago:'
           let spanInfoAreceber = document.createElement('span')
-          spanInfoAreceber.innerHTML = 'A receber:'
+          spanInfoAreceber.classList.add('mt-3')
+          spanInfoAreceber.innerHTML = 'R$21,00'
           let divPagar = document.createElement('div')
-          divPagar.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold')
+          divPagar.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
           let spanPagar = document.createElement('span')
+          let input = document.createElement('input')
+          input.classList.add('form-control', 'mt-3')
+          input.id = 'pagar'
           spanPagar.innerHTML = 'Pagar:'
           let divEmAberto = document.createElement('div')
-          divEmAberto.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold')
+          divEmAberto.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
+          divEmAberto.innerHTML ='Em aberto:'
           let spanEmAberto = document.createElement('span')
-          spanEmAberto.innerHTML = 'Em aberto:'
+          spanEmAberto.classList.add('mt-3')
+          spanEmAberto.innerHTML ='R$:10,90'
 
           divFinance.appendChild(contentValor)
           contentValor.appendChild(divValorTotal)
@@ -161,6 +179,7 @@ export function eventFinanceiro() {
 
           contentValor.appendChild(divPagar)
           divPagar.appendChild(spanPagar)
+          divPagar.appendChild(input)
 
           contentValor.appendChild(divEmAberto)
           divEmAberto.appendChild(spanEmAberto)

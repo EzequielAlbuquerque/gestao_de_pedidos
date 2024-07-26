@@ -296,3 +296,8 @@ main {
   border-radius: 5%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4  );
 }
+.grid_finance{
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20%;
+  justify-content: space-around;
+}
