@@ -1,7 +1,44 @@
 class PedididosFinanceiro {
-  static recuperarPedidos() {
+  constructor(dataInicio, dataFinal, cliente) {
+    this.dataInicio = dataInicio;
+    this.dataFinal = dataFinal;
+    this.cliente = cliente;
+  }
+  recuperarPedidos() {
     let pedidos = localStorage.getItem("pedidos");
     return JSON.parse(pedidos) || [];
+  }
+  filtrarCliente() {
+    let pedido = this.recuperarPedidos();
+    let pedidos = pedido.filter((e) => e.cliente === this.cliente);
+
+    return pedidos;
+  }
+  filtrarClienteData() {
+    let pedidos = this.filtrarCliente();
+    let datas = this.converterData();
+
+    let resultado = pedidos.filter(
+      (p) => (p.data >= datas.dataInicio) & (p.data <= datas.dataFinal)
+    );
+    return resultado;
+  }
+
+  converterData() {
+    let inicio = this.dataInicio.split("-");
+    let final = this.dataFinal.split("-");
+    let dataInicio = `${inicio[2]}/${inicio[1]}/${inicio[0]}`;
+    let dataFinal = `${final[2]}/${final[1]}/${final[0]}`;
+
+    return { dataInicio, dataFinal };
+  }
+  somaTotalPedidos() {
+    let pedidosData = this.filtrarClienteData();
+    let valores = pedidosData.map((v) => v.totalPedido);
+    let total = valores.reduce((a, b) => {
+      return a + b;
+    }, 0);
+    return total;
   }
 }
 
@@ -12,6 +49,7 @@ export function eventFinanceiro() {
     let select = document.getElementById("pesquisa").value;
     let divFinance = document.getElementById("finance");
     let infoSelect = document.getElementById("infoSelect");
+    let contentValor = document.createElement("div");
 
     switch (select) {
       case "":
@@ -76,24 +114,17 @@ export function eventFinanceiro() {
           let ElementTable = document.querySelectorAll(".table");
           ElementTable.forEach((element) => element.remove());
 
-          let pedidos = PedididosFinanceiro.recuperarPedidos();
           let dataInicio = document.getElementById("dataInicio").value;
           let dataFinal = document.getElementById("dataFinal").value;
           let cliente = document.getElementById("cliente").value.toLowerCase();
-          dataInicio = dataInicio.split("-");
-          dataFinal = dataFinal.split("-");
-          let dataInicioConv = `${dataInicio[2]}/${dataInicio[1]}/${dataInicio[0]}`;
-          let dataFinalConv = `${dataFinal[2]}/${dataFinal[1]}/${dataFinal[0]}`;
 
-          let pedido = pedidos.filter((pv) => pv.cliente === cliente);
+          let pedidos = new PedididosFinanceiro(dataInicio, dataFinal, cliente);
 
-          let result = pedido.filter(
-            (d) => d.data >= dataInicioConv && d.data <= dataFinalConv
-          );
+          let result = pedidos.filtrarClienteData();
 
           result.forEach((p) => {
             let divFinance = document.getElementById("finance");
-            let table = document.createElement("table", 'ps-0');
+            let table = document.createElement("table", "ps-0");
 
             table.classList.add("table", "mt-4");
 
@@ -132,60 +163,95 @@ export function eventFinanceiro() {
 
             table.appendChild(tBody);
           });
-          
-         let valores = result.map(v => v.totalPedido)
-         let total = valores.reduce((a,b)=>{
-         return a + b
-         }, 0)
-         
 
-          let contentValor = document.createElement('div')
-          contentValor.classList.add('grid_finance')
-          let divValorTotal = document.createElement('div')
-          divValorTotal.innerHTML = 'Valor total:'
-          divValorTotal.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
-          let spanInfoTotal = document.createElement('span')
-          spanInfoTotal.classList.add('mt-3')
+          let total = pedidos.somaTotalPedidos();
+
+          contentValor.innerHTML = "";
+
+          contentValor.classList.add("grid_finance");
+          let divValorTotal = document.createElement("div");
+          divValorTotal.innerHTML = "Valor total:";
+          divValorTotal.classList.add(
+            "p-5",
+            "text-center",
+            "bg-finance",
+            "fw-bold",
+            "h4",
+            "text-white",
+            "d-flex",
+            "flex-column",
+            "justify-content-center"
+          );
+          let spanInfoTotal = document.createElement("span");
+          spanInfoTotal.classList.add("mt-3");
           spanInfoTotal.innerHTML = total.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
-          })
-          let divAreceber = document.createElement('div')
-          divAreceber.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
-          divAreceber.innerHTML ='Valor pago:'
-          let spanInfoAreceber = document.createElement('span')
-          spanInfoAreceber.classList.add('mt-3')
-          spanInfoAreceber.innerHTML = 'R$21,00'
-          let divPagar = document.createElement('div')
-          divPagar.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
-          let spanPagar = document.createElement('span')
-          let input = document.createElement('input')
-          input.classList.add('form-control', 'mt-3')
-          input.id = 'pagar'
-          spanPagar.innerHTML = 'Pagar:'
-          let divEmAberto = document.createElement('div')
-          divEmAberto.classList.add('p-5', 'text-center', 'bg-finance', 'fw-bold', 'h4', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
-          divEmAberto.innerHTML ='Em aberto:'
-          let spanEmAberto = document.createElement('span')
-          spanEmAberto.classList.add('mt-3')
-          spanEmAberto.innerHTML ='R$:10,90'
+          });
 
-          divFinance.appendChild(contentValor)
-          contentValor.appendChild(divValorTotal)
-          divValorTotal.appendChild(spanInfoTotal)
+          let divAreceber = document.createElement("div");
+          divAreceber.classList.add(
+            "p-5",
+            "text-center",
+            "bg-finance",
+            "fw-bold",
+            "h4",
+            "text-white",
+            "d-flex",
+            "flex-column",
+            "justify-content-center"
+          );
+          divAreceber.innerHTML = "Valor pago:";
+          let spanInfoAreceber = document.createElement("span");
+          spanInfoAreceber.classList.add("mt-3");
+          spanInfoAreceber.innerHTML = "R$21,00";
+          let divPagar = document.createElement("div");
+          divPagar.classList.add(
+            "p-5",
+            "text-center",
+            "bg-finance",
+            "fw-bold",
+            "h4",
+            "text-white",
+            "d-flex",
+            "flex-column",
+            "justify-content-center"
+          );
+          let spanPagar = document.createElement("span");
+          let input = document.createElement("input");
+          input.classList.add("form-control", "mt-3");
+          input.id = "pagar";
+          spanPagar.innerHTML = "Pagar:";
+          let divEmAberto = document.createElement("div");
+          divEmAberto.classList.add(
+            "p-5",
+            "text-center",
+            "bg-finance",
+            "fw-bold",
+            "h4",
+            "text-white",
+            "d-flex",
+            "flex-column",
+            "justify-content-center"
+          );
+          divEmAberto.innerHTML = "Em aberto:";
+          let spanEmAberto = document.createElement("span");
+          spanEmAberto.classList.add("mt-3");
+          spanEmAberto.innerHTML = "R$:10,90";
 
-          contentValor.appendChild(divAreceber)
-          divAreceber.appendChild(spanInfoAreceber)
+          divFinance.appendChild(contentValor);
+          contentValor.appendChild(divValorTotal);
+          divValorTotal.appendChild(spanInfoTotal);
 
-          contentValor.appendChild(divPagar)
-          divPagar.appendChild(spanPagar)
-          divPagar.appendChild(input)
+          contentValor.appendChild(divAreceber);
+          divAreceber.appendChild(spanInfoAreceber);
 
-          contentValor.appendChild(divEmAberto)
-          divEmAberto.appendChild(spanEmAberto)
+          contentValor.appendChild(divPagar);
+          divPagar.appendChild(spanPagar);
+          divPagar.appendChild(input);
 
-
-        
+          contentValor.appendChild(divEmAberto);
+          divEmAberto.appendChild(spanEmAberto);
         });
 
         form.appendChild(divBtn);
@@ -239,3 +305,5 @@ export function eventFinanceiro() {
     }
   });
 }
+
+function criacaoRelatorio() {}
